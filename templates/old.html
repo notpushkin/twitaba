@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Твиттер – Лента</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="/static/styles.css">
+  <link rel="stylesheet" type="text/css" href="/static/futaba.css">
+</head>
+
+<body>
+  <div class="topmenu">
+    <div class="navbar">
+      [ <a title="/d/" href="https://twitter.com/git_huh" target="_blank">d</a> ]
+    </div>
+  </div>
+
+  <div class="logo">
+    <img class="banner" alt="" src="http://placekitten.com/g/300/100" height="100" width="300"><br>
+    Твиттер – Лента
+  </div>
+
+  <hr>
+  
+  {% if type == "thread" %}
+    <div class="theader">Ответ</div>
+    <p>[<a href="/">Назад</a>]</p>
+  {% endif %}
+  
+  <div class="postarea">
+    <form id="postform" method="post" enctype="multipart/form-data">
+      <table width="1%">
+        <tbody>
+          <tr>
+            <td class="postblock"></td>
+            <td>
+              <input type="submit" value="Не поддерживается" disabled>
+            </td>
+          </tr>
+          <tr>
+            <td class="postblock">Сообщение</td>
+            <td><textarea name="text" cols="60" rows="6"></textarea></td>
+          </tr>
+          <tr>
+            <td class="postblock">Файл</td>
+            <td><input disabled size="35" type="file"></td>
+          </tr>
+          <tr>
+            <td class="postblock">Перейти к</td>
+            <td>
+              <label>[<input name="postredir" value="0" type="radio"> ленте ]</label>
+              <label>[<input name="postredir" value="1" selected type="radio"> треду ]</label>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <div class="rules">
+                <ul>
+                  <li>Поддерживаются файлы типов JPG, PNG размером до 5 МБ и GIF, MP4 размером до 15 МБ.</li>
+                  <li>Максимальное количество бампов треда: ∞.</li>
+                  <li>Всем посетителям рекомендуется ознакомиться с <a href="/faq">FAQ</a>.</li>
+                </ul>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </form>
+  </div>
+
+  <form id="delform" action="/delform" method="post">
+    {% for thread in threads %}
+      <div id="{{ thread[0].id }}">
+        {% if thread[0].entities and thread[0].entities.media %}
+          <span class="filesize">
+            Файл: <a target="_blank" href="{{thread[0].entities.media[0].media_url_https}}:orig">{{thread[0].entities.media[0].media_url_https.split("/")[-1]}}</a>
+          </span>
+          <span class="thumbnailmsg">Изображение уменьшено, кликните для отображения оригинала</span><br>
+          <a target="_blank" href="{{thread[0].entities.media[0].media_url_https}}:orig">
+            <img src="{{thread[0].entities.media[0].media_url_https}}" class="thumb" width="200">
+          </a>
+        {% endif %}
+
+        <label>
+          <input name="delete" value="???" type="checkbox">
+          <span class="postername" title="{{ thread[0].source }}">{{ thread[0].user.name }}</span>
+          (<a target="_blank" href="https://twitter.com/{{ thread[0].user.screen_name }}">@{{ thread[0].user.screen_name }}</a>)
+        </label>
+        <span class="reflink">
+          <a target="_blank" href="https://twitter.com/i/status/{{ thread[0].id }}">
+            <time>{{ thread[0].created_at }}</time>
+          </a>
+          <a href="/res/{{ thread[0].id }}">№</a><a href="https://twitter.com/intent/tweet?in_reply_to={{ thread[0].id }}">{{ thread[0].id_str | shortid }}</a>
+        </span>
+        [<a href="/res/{{ thread[0].id }}">Открыть тред</a>]
+        <blockquote>
+          {{ thread[0] | tweettotext }}
+        </blockquote>
+
+        {% for reply in thread[1:] %}
+          <table class="reply-table" id="{{ reply.id }}">
+            <tbody>
+              <tr>
+                <td class="doubledash">&gt;&gt;</td>
+                <td class="reply">
+                  {% if reply.entities.media %}
+                    <span class="filesize">
+                      Файл: <a target="_blank" href="{{reply.entities.media[0].media_url_https}}:large">{{reply.entities.media[0].media_url_https.split("/")[-1]}}</a>
+                    </span>
+                    <span class="thumbnailmsg">Изображение уменьшено, кликните для отображения оригинала</span><br>
+                    <a target="_blank" href="{{reply.entities.media[0].media_url_https}}:large">
+                      <img src="{{reply.entities.media[0].media_url_https}}" class="thumb" width="200">
+                    </a>
+                  {% endif %}
+
+                  <label>
+                    <input name="delete" value="???" type="checkbox">
+                    <span class="postername">{{ reply.user.name }}</span>
+                    (<a href="#">@{{ reply.user.screen_name }}</a>)
+                  </label>
+                  <span class="reflink">
+                    <a target="_blank" href="https://twitter.com/i/status/{{ reply.id }}">
+                      <time>{{ reply.created_at }}</time>
+                    </a>
+                    <a href="#{{ reply.id }}">№</a><a href="https://twitter.com/intent/tweet?in_reply_to={{ reply.id }}">{{ reply.id_str | shortid }}</a>
+                  </span>
+                  <blockquote>
+                    {% if reply.in_reply_to_status_id %}
+                      <a href="#{{reply.in_reply_to_status_id}}">&gt;&gt;{{ reply.in_reply_to_status_id_str | shortid }}</a><br>
+                    {% endif %}
+                    {{ reply | tweettotext }}
+                    <!--{{ reply | tojson | safe }}-->
+                  </blockquote>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        {% endfor %}
+      </div><!-- /thread -->
+      <br clear="left"><hr>
+    {% endfor %}
+
+    <table class="userdelete">
+      <tbody>
+        <tr>
+          <td>
+            <button type="submit">Удалить</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </form>
+  <!-- <table border="1">
+    <tbody>
+      <tr>
+        <td> Назад </td>
+        <td> [0] </td>
+        <td>
+          <form method="get" action="/b/1.html"><input value="Далее" type="submit"></form>
+        </td>
+        <td><a href="catalogue.html">Каталог</a> </td>
+      </tr>
+    </tbody>
+  </table><br clear="all"> -->
+  <p class="footer">
+    - <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">tweetaba</a> v2.0.0-pre1
+    + <a href="https://twitter.com/">twitter</a> -
+  </p>
+  <pre>{{ raw_resp }}</pre>
+</body>
+
+</html>

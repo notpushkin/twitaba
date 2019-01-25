@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Твитаба – {% if type == "thread" %}тред{% else %}лента{% endif %}</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="/static/styles.css">
+  <link rel="stylesheet" type="text/css" href="/static/futaba.css">
+</head>
+
+<body>
+  <div class="topmenu">
+    <div class="navbar">
+      [ <a title="Тред о твитабе" href="/res/1088863053083492352" target="_blank">d</a> ]
+    </div>
+  </div>
+
+  <div class="logo">
+    <a href="/"><img class="banner" alt="" src="https://u.ale.sh/twi-bn3.png" height="100" width="300"></a><br>
+    Твиттор
+  </div>
+  
+  {% if type == "thread" %}
+    <div class="theader">Ответ</div>
+    <p>[<a href="/">Назад</a>]</p>
+  {% elif type == "home" %}
+    <div class="postarea">
+      <!-- <form id="postform" method="post" enctype="multipart/form-data">
+        <table width="1%">
+          <tbody>
+            <tr>
+              <td class="postblock"></td>
+              <td>
+                <input type="submit" value="Не поддерживается" disabled>
+              </td>
+            </tr>
+            <tr>
+              <td class="postblock">Сообщение</td>
+              <td><textarea name="text" cols="60" rows="6"></textarea></td>
+            </tr>
+            <tr>
+              <td class="postblock">Файл</td>
+              <td><input disabled size="35" type="file"></td>
+            </tr>
+            <tr>
+              <td class="postblock">Перейти к</td>
+              <td>
+                <label>[<input name="postredir" value="0" type="radio"> ленте ]</label>
+                <label>[<input name="postredir" value="1" selected type="radio"> треду ]</label>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <div class="rules">
+                  <ul>
+                    <li>Поддерживаются файлы типов JPG, PNG размером до 5 МБ и GIF, MP4 размером до 15 МБ.</li>
+                    <li>Максимальное количество бампов треда: ∞.</li>
+                    <li>Всем посетителям рекомендуется ознакомиться с <a href="/faq">FAQ</a>.</li>
+                  </ul>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </form> -->
+      <a class="newthread" href="https://twitter.com/intent/tweet" target="_blank">Создать тред</a>
+    </div>
+  {% endif %}
+  
+  <hr>
+
+  <form id="delform" action="/delform" method="post">
+    {% for thread in threads %}
+      <div id="{{ thread[0].id }}">
+        {{ thread[0] | renderpost(type != "thread") }}
+        
+        {% if type != "thread" %}
+          {% if len(thread) > 4 %}
+            <span class="omittedposts"> Пропущено {{ len(thread) - 4 }} твитов. Для просмотра нажмите "Открыть тред". </span>
+          {% endif %}
+        {% endif %}
+
+        {% for reply in thread[1:][(0 if type == "thread" else -3):] %}
+          <table class="reply-table" id="{{ reply.id }}">
+            <tbody>
+              <tr>
+                <td class="doubledash">&gt;&gt;</td>
+                <td class="reply">
+                  {{ reply | renderpost }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        {% endfor %}
+      </div><!-- /thread -->
+      <br clear="left"><hr>
+    {% endfor %}
+  </form>
+
+  <p class="footer">
+    - <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">tweetaba</a> v2.0.0-pre1
+    + <a href="https://twitter.com/">twitter</a> -
+  </p>
+
+  <details class="debug-info">
+    <summary>Raw Twitter API response</summary>
+    <pre>(also available as window._raw_resp)
+
+{{ raw_resp }}</pre>
+  </details>
+  <script type="text/javascript">
+    window._raw_resp = ({{ raw_resp | safe }});
+  </script>
+</body>
+
+</html>

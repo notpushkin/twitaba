@@ -1,0 +1,42 @@
+<label>
+  <input name="delete" value="???" type="checkbox">
+  <span class="postername" title="{{ source }}">{{ user_name }}</span>
+  (<a target="_blank" class="screenname" href="https://twitter.com/{{ screen_name }}">@{{ screen_name }}</a>)
+</label>
+<span class="reflink">
+  [<a target="_blank" href="https://twitter.com/intent/retweet?tweet_id={{ id }}">RT</a> ·
+  <a target="_blank" href="https://twitter.com/intent/like?tweet_id={{ id }}">★</a>]
+  <a target="_blank" href="https://twitter.com/i/status/{{ id }}">
+    <time>{{ created_at }}</time>
+  </a>
+  <a href="#{{ id }}">№</a><a target="_blank" href="https://twitter.com/intent/tweet?in_reply_to={{ id }}">{{ short_id }}</a>
+</span>
+{% if show_thread_link %}[<a href="/res/{{ id }}">Открыть тред</a>]{% endif %}
+
+<br>
+
+{% for file in files %}
+<div class="file">
+  <div class="fileinfo">
+    Файл: <a href="{{ file.href }}" target="_blank">{{ file.name }}</a>
+    {% if file.type == "photo" %}
+    <br>
+    <a class="icon" target="_blank" href="http://www.google.com/searchbyimage?image_url={{file.src}}"><img src="/static/google.png" title="Find source with google" alt="Find source with google"></a>
+    <a class="icon" target="_blank" href="http://iqdb.org/?url={{file.src}}"><img src="/static/booru.png" title="Find source with iqdb" alt="Find source with iqdb"></a>
+    {% endif %}
+  </div>
+  
+  <a href="{{ file.href }}" target="_blank"><img src="{{ file.src }}" class="thumb" style="float: none; border: medium none;" width="200"></a>
+</div>
+{% endfor %}
+
+{% if len(files) > 1 %}
+  <br clear="both">
+{% endif %}
+
+<blockquote>
+  {% if reply_to %}
+    <a href="#{{ reply_to }}">&gt;&gt;{{ short_reply_to }}{% if reply_to == thread_op %} (OP){% endif %}</a><br>
+  {% endif %}
+  {{ text }}
+</blockquote>

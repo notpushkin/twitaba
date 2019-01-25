@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Твитаба – Авторизация</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="/static/styles.css">
+  <link rel="stylesheet" type="text/css" href="/static/futaba.css">
+</head>
+
+<body>
+  <h1>Твитаба – Авторизация</h1>
+  {% if flash %}
+    <ul>
+      <li>{{ flash }}</li>
+    </ul>
+  {% endif %}
+  <p><a href="{{ auth_url }}" target="_blank">Войти через Твиттер</a></p>
+  <form method="post" enctype="multipart/form-data">
+    <table>
+      <tbody>
+        <tr>
+          <td class="postblock">PIN-код</td>
+          <td><input name="verifier" size="35" type="text"></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td><input type="submit"></td>
+        </tr>
+      </tbody>
+    </table>
+    <input type="hidden" name="resource_owner_key" value="{{ resource_owner_key }}">
+    <input type="hidden" name="resource_owner_secret" value="{{ resource_owner_secret }}">
+  </form>
+  <ul>
+    <li>Для ответа на пост жмите на номер сообщения. Для того, чтобы открыть в обычном твитторе — на дату.</li>
+    <li>Обо всех ошибках сообщайте <a href="https://twitter.com/git_huh">@git_huh</a>.</li>
+  </ul>
+</body>
+
+</html>
