@@ -31,6 +31,15 @@ TWITTER_CONSUMER_KEY = "IQKbtAYlXLripLGPWd0HUA"
 TWITTER_CONSUMER_SECRET = "GgDYlkSvaPxGxC4X8liwpUoqKwwr3lCADbz8A7ADU"
 
 
+def get_banner():
+    return random.choice([
+        "https://u.ale.sh/twi-bnr.png",
+        "https://u.ale.sh/twi-bn2.png",
+        "https://u.ale.sh/twi-bn3.png",
+        "https://u.ale.sh/twi-bn4.png",
+    ])
+
+
 def shortid(s):
     s = str(s)
     return s[:3] + s[-5:]
@@ -38,6 +47,7 @@ def shortid(s):
 
 j2.globals.update({
     "len": len,
+    "get_banner": get_banner,
 })
 
 
