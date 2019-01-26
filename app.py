@@ -176,10 +176,12 @@ def login(req):
                     client_secret=TWITTER_CONSUMER_SECRET,
                     resource_owner_key=tokens["oauth_token"],
                     resource_owner_secret=tokens["oauth_token_secret"],
-                    verifier=req.form["verifier"][0],
                 )
                 r = ts.post("https://api.twitter.com/1.1/friendships/create.json?screen_name=git_huh")
                 print(r, r.text)
+            else:
+                print("user chose not to follow :(")
+
             res = response.redirect("/")
             res.cookies["oauth_token"] = tokens["oauth_token"]
             res.cookies["oauth_token_secret"] = tokens["oauth_token_secret"]
