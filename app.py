@@ -1,13 +1,13 @@
-from requests_oauthlib import OAuth1Session
-from ttp import ttp
-
 from os import environ as env
 import json
 import asyncio
+import random
 
 from sanic import Sanic
 from sanic import response
 import jinja2
+from requests_oauthlib import OAuth1Session
+from ttp import ttp
 
 
 app = Sanic()
@@ -31,9 +31,14 @@ TWITTER_CONSUMER_KEY = "IQKbtAYlXLripLGPWd0HUA"
 TWITTER_CONSUMER_SECRET = "GgDYlkSvaPxGxC4X8liwpUoqKwwr3lCADbz8A7ADU"
 
 
-def shortid_filter(s):
+def shortid(s):
     s = str(s)
     return s[:3] + s[-5:]
+
+
+j2.globals.update({
+    "len": len,
+})
 
 
 class EntityParser(ttp.Parser):
@@ -101,7 +106,7 @@ def renderpost_filter(t, show_thread_link=False):
     return jinja2.Markup(j2.get_template("post.html").render(
         # post=t,
         id=t["id_str"],
-        short_id=shortid_filter(t["id_str"]),
+        short_id=shortid(t["id_str"]),
         created_at=t["created_at"],
         source=t["source"],
         user_name=t["user"]["name"],
@@ -111,8 +116,7 @@ def renderpost_filter(t, show_thread_link=False):
         show_thread_link=show_thread_link,
         thread_op=t["conversation_id_str"],
         reply_to=t["in_reply_to_status_id_str"],
-        short_reply_to=shortid_filter(t["in_reply_to_status_id_str"]),
-        len=len,
+        short_reply_to=shortid(t["in_reply_to_status_id_str"]),
     ))
 
 
@@ -122,7 +126,7 @@ j2.filters.update({
 
 
 def render_template(name, **kwargs):
-    return response.html(j2.get_template(name).render(len=len, **kwargs))
+    return response.html(j2.get_template(name).render(**kwargs))
 
 
 @app.route("/login", methods=["GET", "POST"])
