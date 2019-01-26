@@ -92,11 +92,22 @@ def renderpost_filter(t, show_thread_link=False):
                     "href": medium["media_url_https"] + ":orig",
                 })
             elif medium["type"] in ["animated_gif", "video"]:
+                # `video_info.variants` look like either:
+                # - {"bitrate": N, "content_type": "video/mp4", "url": ...}
+                # - {"content_type": "application/x-mpegURL", "url": ...}
+                #
+                # We're only interested in video/mp4 with highest bitrate, so:
+
+                best = max(
+                    medium["video_info"]["variants"],
+                    key=lambda v: v.get("bitrate", -1)
+                )
+
                 files.append({
-                    "name": medium["video_info"]["variants"][0]["url"].rsplit("/", 1)[-1].rsplit("?", 1)[0],
+                    "name": best["url"].rsplit("/", 1)[-1].rsplit("?", 1)[0],
                     "type": medium["type"],
                     "src": medium["media_url_https"],
-                    "href": medium["video_info"]["variants"][-1]["url"],
+                    "href": best["url"],
                 })
     
     for link in t["entities"].get("urls", []):
