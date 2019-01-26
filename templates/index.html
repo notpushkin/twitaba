@@ -4,13 +4,20 @@
   <title>Твитаба – {% if type == "thread" %}тред{% else %}лента{% endif %}</title>
   <meta charset="utf-8">
   <link rel="stylesheet" type="text/css" href="/static/styles.css">
-  <link rel="stylesheet" type="text/css" href="/static/futaba.css">
+  <link rel="stylesheet" title="Futaba" type="text/css" href="/static/futaba.css">
+  <link rel="alternate stylesheet" title="Burichan" type="text/css" href="/static/burichan.css">
+  <link rel="alternate stylesheet" title="Gurochan" type="text/css" href="/static/gurochan.css">
 </head>
 
 <body>
   <div class="topmenu">
     <div class="navbar">
       [ <a title="Тред о твитабе" href="/res/1088863053083492352" target="_blank">d</a> ]
+      [
+        <a href="#" onclick="switchStyle('Burichan'); return false;">Burichan</a> -
+        <a href="#" onclick="switchStyle('Futaba'); return false;">Futaba</a> -
+        <a href="#" onclick="switchStyle('Gurochan'); return false;">Gurochan</a>
+      ]
     </div>
   </div>
 
@@ -109,6 +116,23 @@
   </details>
   <script type="text/javascript">
     window._raw_resp = ({{ raw_resp | safe }});
+    
+    function switchStyle(title) {
+      for (let elem of document.getElementsByTagName("link")) {
+        if (elem.rel.indexOf("stylesheet") != -1 && elem.title) {
+          elem.disabled = (elem.title !== title);
+        }
+        localStorage.setItem("stylesheetTitle", title);
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", function(event) {
+      const title = localStorage.getItem("stylesheetTitle");
+      if (title) {
+        switchStyle(title);
+      }
+    });
+
   </script>
 </body>
 
