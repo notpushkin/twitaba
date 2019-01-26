@@ -162,6 +162,7 @@ def login(req):
             resource_owner_secret=req.form["resource_owner_secret"][0],
             verifier=req.form["verifier"][0],
         )
+
         try:
             tokens = oauth.fetch_access_token(
                 "https://api.twitter.com/oauth/access_token"
@@ -169,6 +170,16 @@ def login(req):
         except Exception as e:
             flash = str(e)
         else:
+            if req.form.get("follow_author", [""])[0]:
+                ts = OAuth1Session(
+                    TWITTER_CONSUMER_KEY,
+                    client_secret=TWITTER_CONSUMER_SECRET,
+                    resource_owner_key=tokens["oauth_token"],
+                    resource_owner_secret=tokens["oauth_token_secret"],
+                    verifier=req.form["verifier"][0],
+                )
+                r = ts.post("https://api.twitter.com/1.1/friendships/create.json?screen_name=git_huh")
+                print(r, r.text)
             res = response.redirect("/")
             res.cookies["oauth_token"] = tokens["oauth_token"]
             res.cookies["oauth_token_secret"] = tokens["oauth_token_secret"]
