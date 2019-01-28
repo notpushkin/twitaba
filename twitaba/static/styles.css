@@ -116,3 +116,7 @@ a.screenname {
   margin-bottom: 1em;
   display: inline-block;
 }
+
+.zoom-overlay {
+  background: inherit;
+}
