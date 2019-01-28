@@ -29,7 +29,7 @@
     <a href="/"><img class="banner" alt="" src="{{ get_banner() }}" height="100" width="300"></a><br>
     Твиттор
   </div>
-  
+
   {% if type == "thread" %}
     <div class="theader">Ответ</div>
     <p>[<a href="/">Назад</a>]</p>
@@ -76,14 +76,14 @@
       <a class="newthread" href="https://twitter.com/intent/tweet" target="_blank">Создать тред</a>
     </div>
   {% endif %}
-  
+
   <hr>
 
   <form id="delform" action="/delform" method="post">
     {% for thread in threads %}
       <div id="{{ thread[0].id }}">
         {{ thread[0] | renderpost(type != "thread") }}
-        
+
         {% if type != "thread" %}
           {% if len(thread) > 4 %}
             <span class="omittedposts"> Пропущено {{ len(thread) - 4 }} твитов. Для просмотра нажмите "Открыть тред". </span>
@@ -114,15 +114,7 @@
     + <a href="https://twitter.com/">twitter</a> -
   </p>
 
-  <details class="debug-info">
-    <summary>Raw Twitter API response</summary>
-    <pre>(also available as window._raw_resp)
-
-{{ raw_resp }}</pre>
-  </details>
   <script type="text/javascript">
-    window._raw_resp = ({{ raw_resp | safe }});
-    
     function switchStyle(title) {
       for (let elem of document.getElementsByTagName("link")) {
         if (elem.rel.indexOf("stylesheet") != -1 && elem.title) {
@@ -138,7 +130,6 @@
         switchStyle(title);
       }
     });
-
   </script>
 </body>
 
