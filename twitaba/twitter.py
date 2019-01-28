@@ -61,14 +61,6 @@ async def fetch_home_threads(session):
 
     return [x for x in await asyncio.gather(*futures) if x is not None]
 
-
-USER_AGENT = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/71.0.3578.98 Chrome/71.0.3578.98 Safari/537.36"
-
-def get_guest_token():
-    r = requests.get("https://mobile.twitter.com/jack", headers={"user-agent": USER_AGENT})
-    return r.text.rsplit("(\"gt=", 1)[1].split(";")[0]
-
-
 def fetch_thread(thread_id, guest_token=None):
     r = requests.get(
         "https://api.twitter.com/2/timeline/conversation/%i.json" % thread_id,
