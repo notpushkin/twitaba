@@ -93,5 +93,5 @@ def thread(req, thread_id):
     )
 
     return render_template(
-        "index.html", threads=[fetch_thread(thread_id)], type="thread"
+        "index.html", threads=[fetch_thread(session, thread_id)], type="thread"
     )

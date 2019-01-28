@@ -55,19 +55,19 @@ async def fetch_home_threads(session):
 
     loop = asyncio.get_event_loop()
     futures = [
-        loop.run_in_executor(None, except_pass, fetch_thread, thread_id, guest_token)
+        loop.run_in_executor(None, except_pass, fetch_thread, session, thread_id, guest_token)
         for thread_id in thread_ids
     ]
 
     return [x for x in await asyncio.gather(*futures) if x is not None]
 
-def fetch_thread(thread_id, guest_token=None):
-    r = requests.get(
+def fetch_thread(session, thread_id, guest_token=None):
+    r = session.get(
         "https://api.twitter.com/2/timeline/conversation/%i.json" % thread_id,
-        headers={
-            "authorization": "Bearer AAAAAAAAAAAAAAAAAAAAANRILgAAAAAAnNwIzUejRCOuH5E6I8xnZz4puTs%3D1Zv7ttfk8LF81IUq16cHjhLTvJu4FA33AGWWjCpTnA",
-            "x-guest-token": guest_token or get_guest_token(),
-        },
+        # headers={
+        #     "authorization": "Bearer AAAAAAAAAAAAAAAAAAAAANRILgAAAAAAnNwIzUejRCOuH5E6I8xnZz4puTs%3D1Zv7ttfk8LF81IUq16cHjhLTvJu4FA33AGWWjCpTnA",
+        #     "x-guest-token": guest_token or get_guest_token(),
+        # },
         params={
             "include_profile_interstitial_type": 1,
             "include_blocking": 1,
