@@ -1,0 +1,173 @@
+html,
+body {
+  background-color: #eeeeee;
+  color: #333333;
+  font-family: "Trebuchet MS", Trebuchet, sans-serif;;
+}
+a,
+.spoiler:hover a,
+.greeting {
+  color: #ff6600;
+}
+a:hover,
+.spoiler:hover a:hover,
+.reflink a:hover {
+  color: #0066ff;
+}
+
+.adminbar {
+  text-align: right;
+  clear: both;
+  float: right;
+}
+.logo {
+  color: #ff6600;
+  clear: both;
+  text-align: center;
+  font-size: 2em;
+  width: 100%;
+	font-weight: bold;
+}
+.sublogo {
+  clear: both;
+  text-align: center;
+  font-size: 1em;
+  color: #800000;
+  width: 100%;
+  padding: 2px 0px 12px 0px;
+}
+
+.banner {
+  margin-top: 10px;
+}
+
+.theader,
+.news {
+  background-color: #dddddd;
+  border: solid 1px #cccccc;
+  color: #2266aa;
+  font-weight: bold;
+  margin-bottom: 0.5em;
+  padding: 2px;
+  width: auto;
+  border-radius: 5px;
+}
+.postblock {
+  background-color: transparent;
+  color: #002244;
+  font-weight: bold;
+}
+.footer {
+  margin: 2em 0 0 0;
+  padding-top: 6px;
+  text-align: center;
+  font-size: 12px;
+  font-family: serif;
+  clear: both;
+}
+.reflink a,
+.spoiler:hover {
+  color: inherit;
+}
+.filesize,
+.abbrev,
+.omittedposts,
+.thumbnailmsg {
+  color: #666666;
+}
+.thumbnailmsg {
+  font-size: 0.7em;
+}
+.filetitle,
+.replytitle {
+  color: #002244;
+  font-weight: bold;
+}
+.postername,
+.commentpostername {
+  color: #004a99;
+}
+.postertrip {
+  color: #ff3300;
+}
+.reply {
+  background-color: #dddddd;
+  border: solid 1px #cccccc;
+  color: inherit;
+  padding: 0;
+  margin: 0;
+  border-radius: 5px;
+}
+blockquote {
+  margin: 0.5em 0.5em 0.5em 1em;
+}
+blockquote p,
+.banner {
+  margin-top: 0;
+}
+blockquote p + .unkfunc {
+  margin-top: -0.5em;
+}
+.reply blockquote {
+  margin: 0.5em;
+}
+.doubledash {
+  display: none;
+}
+hr {
+  border-color: #bbbbbb;
+  border-style: solid none none none;
+}
+table,
+table td {
+  border-style: none;
+}
+.nothumb {
+  background-color: #ffffff;
+  border-style: dotted;
+  margin: 0.3em 0.5em;
+}
+.highlight {
+  background-color: #eedacb;
+  border: 2px dashed #ee6600;
+  color: #333333;
+}
+.highlight .filesize {
+  margin-left: 20px;
+}
+.category {
+  background-color: #dddddd;
+  border: 1px solid #cccccc;
+  font-family: inherit;
+  font-size: 0.9em;
+  margin-bottom: 9px;
+  border-radius: 5px;
+}
+.header {
+  background-color: inherit;
+  border-bottom: 1px solid #cccccc;
+  color: inherit;
+  font-size: 0.9em;
+  font-weight: normal;
+  padding: 0px 5px 0px 5px;
+}
+.list {
+  background-color: #eeeeee;
+  padding: 0px 5px 5px 5px;
+  border-radius: 0px 0px 5px 5px;
+}
+.list div a {
+  display: inline;
+  text-decoration: underline;
+  padding: 0;
+}
+.list div a:hover {
+  background-color: inherit;
+}
+.spoiler {
+  background-color: #cccccc;
+  color: #cccccc;
+}
+.spoiler a {
+  color: #cccccc;
+}
