@@ -69,7 +69,8 @@ class EntityParser(ttp.Parser):
 
     def format_url(self, url, text):
         """Return formatted HTML for a url."""
-        return '<a href="%s" target="_blank">%s</a>' % (ttp.escape(url), text)
+        return '<a href="%s" target="_blank">%s</a>' \
+               % (ttp.escape(url), ttp.escape(url))
 
 
 def renderpost_filter(t, show_thread_link=False):
