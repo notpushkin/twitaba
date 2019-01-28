@@ -25,7 +25,7 @@
     <a class="icon" target="_blank" href="http://iqdb.org/?url={{file.src}}"><img src="/static/booru.png" title="Find source with iqdb" alt="Find source with iqdb"></a>
     {% endif %}
   </div>
-  
+
   <a href="{{ file.href }}" target="_blank"><img src="{{ file.src }}" class="thumb" style="float: none; border: medium none;" width="200"></a>
 </div>
 {% endfor %}
@@ -38,5 +38,5 @@
   {% if reply_to %}
     <a href="#{{ reply_to }}">&gt;&gt;{{ short_reply_to }}{% if reply_to == thread_op %} (OP){% endif %}</a><br>
   {% endif %}
-  {{ text }}
+  {{ text | safe }}
 </blockquote>
