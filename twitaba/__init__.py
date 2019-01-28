@@ -92,6 +92,9 @@ def thread(req, thread_id):
         resource_owner_secret=req.cookies["oauth_token_secret"],
     )
 
-    return render_template(
-        "index.html", threads=[fetch_thread(session, thread_id)], type="thread"
-    )
+    try:
+        return render_template(
+            "index.html", threads=[fetch_thread(session, thread_id)], type="thread"
+        )
+    except:
+        return render_template("index.html", threads=[], type="thread")
