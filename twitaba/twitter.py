@@ -10,16 +10,6 @@ USER_AGENT = (
 )
 
 
-def get_guest_token():
-    r = requests.get(
-        "https://mobile.twitter.com/jack", headers={"user-agent": USER_AGENT}
-    )
-    try:
-        return r.text.rsplit('("gt=', 1)[1].split(";")[0]
-    except:
-        print(r.text)
-
-
 def get_home_thread_ids(session):
     r = session.get(
         "https://api.twitter.com/1.1/statuses/home_timeline.json",
@@ -44,8 +34,6 @@ def get_home_thread_ids(session):
 async def fetch_home_threads(session):
     thread_ids = get_home_thread_ids(session)
 
-    guest_token = get_guest_token()
-
     def except_pass(f, *a, **kw):
         try:
             return f(*a, **kw)
@@ -55,19 +43,15 @@ async def fetch_home_threads(session):
 
     loop = asyncio.get_event_loop()
     futures = [
-        loop.run_in_executor(None, except_pass, fetch_thread, session, thread_id, guest_token)
+        loop.run_in_executor(None, except_pass, fetch_thread, session, thread_id)
         for thread_id in thread_ids
     ]
 
     return [x for x in await asyncio.gather(*futures) if x is not None]
 
-def fetch_thread(session, thread_id, guest_token=None):
+def fetch_thread(session, thread_id):
     r = session.get(
         "https://api.twitter.com/2/timeline/conversation/%i.json" % thread_id,
-        # headers={
-        #     "authorization": "Bearer AAAAAAAAAAAAAAAAAAAAANRILgAAAAAAnNwIzUejRCOuH5E6I8xnZz4puTs%3D1Zv7ttfk8LF81IUq16cHjhLTvJu4FA33AGWWjCpTnA",
-        #     "x-guest-token": guest_token or get_guest_token(),
-        # },
         params={
             "include_profile_interstitial_type": 1,
             "include_blocking": 1,
