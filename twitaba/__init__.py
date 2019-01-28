@@ -1,7 +1,7 @@
-from os import environ as env
 import json
 import asyncio
 import random
+import pkg_resources
 
 from sanic import Sanic
 from sanic import response
@@ -11,7 +11,7 @@ from ttp import ttp
 
 
 app = Sanic()
-app.static('/static', './static')
+app.static('/static', pkg_resources.resource_filename(__name__, "static"))
 
 
 j2 = jinja2.Environment(
@@ -276,12 +276,3 @@ def thread(req, thread_id):
     r.raise_for_status()
 
     return render_template("index.html", threads=[r.json()], type="thread", raw_resp=json.dumps(r.json(), ensure_ascii=0, indent=2))
-
-
-if __name__ == "__main__":
-    app.run(
-        host="0.0.0.0",
-        port=int(env.get("PORT", 8000)),
-        workers=int(env.get("WEB_CONCURRENCY", 1)),
-        debug=bool(env.get("DEBUG", ""))
-    )
