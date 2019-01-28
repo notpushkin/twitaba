@@ -14,7 +14,10 @@ def get_guest_token():
     r = requests.get(
         "https://mobile.twitter.com/jack", headers={"user-agent": USER_AGENT}
     )
-    return r.text.rsplit('("gt=', 1)[1].split(";")[0]
+    try:
+        return r.text.rsplit('("gt=', 1)[1].split(";")[0]
+    except:
+        print(r.text)
 
 
 def get_home_thread_ids(session):
