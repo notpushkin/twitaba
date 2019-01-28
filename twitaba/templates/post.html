@@ -26,7 +26,9 @@
     {% endif %}
   </div>
 
-  <a href="{{ file.href }}" target="_blank"><img src="{{ file.src }}" class="thumb" style="float: none; border: medium none;" width="200"></a>
+  <a href="{{ file.href }}" target="_blank">
+    <img src="{{ file.src }}" class="thumb" style="float: none; border: medium none;" width="200" {% if file.type == "photo" %}data-action="zoom" data-original="{{ file.href }}"{% endif %}>
+  </a>
 </div>
 {% endfor %}
 
